@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package katana.lox;
 
 import java.io.BufferedReader;
 import java.io.IOException;

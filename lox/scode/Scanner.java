@@ -1,11 +1,11 @@
-package com.craftinginterpreters.lox;
+package katana.lox;
 
 import java.util.ArrayList;
-import java.util.Hashmap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.craftinginterpreters.lox.TokenType.*;
+import static katana.lox.TokenType.*;
 
 class Scanner {
   private final String source ;
@@ -22,7 +22,7 @@ class Scanner {
     while (!isAtEnd()) {
       //beg of the next lex
       start = current;
-      scanTokens();
+      scanToken();
     }
     tokens.add(new Token(EOF,"",null,line));
     return tokens;
@@ -31,7 +31,7 @@ class Scanner {
   private static final Map<String,TokenType> keywords;
     
   static{
-    keywords = new Hashmap<>();
+    keywords = new HashMap<>();
     keywords.put("and",   AND);
     keywords.put("class",   CLASS);
     keywords.put("else",   ELSE);
@@ -50,13 +50,13 @@ class Scanner {
     keywords.put("while",   WHILE);
   }
 
-  private void scanTokens() {
+  private void scanToken() {
     char c = advance();
     switch (c) {
       case '(': addToken(LEFT_PAREN);break;
       case ')': addToken(RIGHT_PAREN);break;
       case '{': addToken(LEFT_BRACE);break;
-      case '}': addToken(LEFT_BRACE);break;
+      case '}': addToken(RIGHT_BRACE);break;
       case ',': addToken(COMMA);break;
       case '.': addToken(DOT);break;
       case '-': addToken(MINUS);break;
@@ -69,10 +69,10 @@ class Scanner {
       case'=':
         addToken(match('=') ? EQUAL_EQUAL : EQUAL);
         break;
-      case'>': 
+      case'<': 
         addToken(match('=') ? LESS_EQUAL :LESS );
         break;
-      case '<':
+      case '>':
         addToken(match('=') ? GREATER_EQUAL : GREATER);
         break;
       case '/':
@@ -119,7 +119,7 @@ class Scanner {
     return true;
   }
 
-  private chat peek() {
+  private char peek() {
     if (isAtEnd()) {
       return '\0';
     }
@@ -131,7 +131,7 @@ class Scanner {
     return source.charAt(current - 1);
   }
 
-  private void String() {
+  private void string() {
     while (peek()!= '"' && !isAtEnd()) { //checks ending "
       if (peek() == '\n') {
         line++; //multi line strings

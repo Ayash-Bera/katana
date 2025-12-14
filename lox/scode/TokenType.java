@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package katana.lox;
 
 enum TokenType {
   // single tokens.
